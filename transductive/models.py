@@ -33,7 +33,8 @@ class GNNLayer(torch.nn.Module):
         h_qr = self.rela_embed(q_rel)[r_idx]
 
         message = hs + hr
-        alpha = torch.sigmoid(self.w_alpha(nn.ReLU()(self.Ws_attn(hs) + self.Wr_attn(hr) + self.Wqr_attn(h_qr))))
+        # alpha = torch.sigmoid(self.w_alpha(nn.ReLU()(self.Ws_attn(hs) + self.Wr_attn(hr) + self.Wqr_attn(h_qr))))
+        alpha = torch.nn.softmax(self.w_alpha(nn.ReLU()(self.Ws_attn(hs) + self.Wr_attn(hr) + self.Wqr_attn(h_qr))))
         message = alpha * message
 
         message_agg = scatter(message, index=obj, dim=0, dim_size=n_node, reduce='sum')
