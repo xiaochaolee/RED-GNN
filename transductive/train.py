@@ -9,6 +9,7 @@ from utils import select_gpu
 parser = argparse.ArgumentParser(description="Parser for RED-GNN")
 parser.add_argument('--data_path', type=str, default='data/family/')
 parser.add_argument('--seed', type=str, default=1234)
+parser.add_argument('--epochs', type=int, default=50)
 
 
 args = parser.parse_args()
@@ -109,7 +110,7 @@ if __name__ == '__main__':
     model = BaseModel(opts, loader)
 
     best_mrr = 0
-    for epoch in range(50):
+    for epoch in range(args.epochs):
         mrr, out_str = model.train_batch()
         with open(opts.perf_file, 'a+') as f:
             f.write(out_str)
